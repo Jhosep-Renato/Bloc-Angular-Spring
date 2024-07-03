@@ -19,14 +19,14 @@ public class AuthController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO theUserDTO) {
+    public ResponseEntity<HttpStatus> createUser(@RequestBody UserDTO theUserDTO) {
 
         try {
             authService.createUser(theUserDTO);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(theUserDTO, null, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/login-user")

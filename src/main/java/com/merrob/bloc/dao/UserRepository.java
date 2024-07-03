@@ -1,9 +1,11 @@
 package com.merrob.bloc.dao;
 
-import com.merrob.bloc.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.merrob.bloc.entity.SectionFree;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository  {
+
+    SectionFree addNewSection(String title, int blocId);
+
 }

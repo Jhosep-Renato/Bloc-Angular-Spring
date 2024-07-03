@@ -17,18 +17,27 @@ abstract public class Section {
 
     private String title;
 
-    private String content;
-
-    @Column(name = "photo_profile")
-    private byte[] photoProfile;
-
-    private int blocId;
-
-    public Section(String title, String content, byte[] photoProfile, int blocId) {
+    public Section(String title) {
         this.title = title;
-        this.content = content;
-        this.photoProfile = photoProfile;
-        this.blocId = blocId;
     }
 
+    public SectionFree searchAndPersist(BlocFree theBlocFree, String theTitle,
+                                           EntityManager entityManager) {
+
+        final String HQL = "FROM SectionFree WHERE title = :title AND blocId = :bloc";
+
+        TypedQuery<SectionFree> typedQuery = entityManager
+                .createQuery(HQL, SectionFree.class);
+
+        typedQuery.setParameter("title", theTitle);
+        typedQuery.setParameter("bloc", theBlocFree);
+
+        SectionFree tempSectionFree = null;
+
+        try {
+            tempSectionFree = typedQuery.getSingleResult();
+        } catch (Exception ignored) {
+        }
+        return tempSectionFree;
+    }
 }

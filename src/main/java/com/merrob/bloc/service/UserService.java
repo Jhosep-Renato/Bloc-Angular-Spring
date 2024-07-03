@@ -1,10 +1,8 @@
 package com.merrob.bloc.service;
 
+import com.merrob.bloc.dto.SectionFreeDTO;
+
 public interface UserService {
 
-    void addPage();
-
-    void deletePage();
-
-    void deleteAll();
+    SectionFreeDTO addNewSection(String title, int blocId);
 }

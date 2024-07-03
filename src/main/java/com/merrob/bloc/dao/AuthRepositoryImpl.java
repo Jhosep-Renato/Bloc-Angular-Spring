@@ -3,15 +3,15 @@ package com.merrob.bloc.dao;
 import com.merrob.bloc.dto.UserDTO;
 import com.merrob.bloc.entity.BlocFree;
 import com.merrob.bloc.entity.User;
+import com.merrob.bloc.exceptions.UserNotFoundException;
+import com.merrob.bloc.exceptions.UserRepeatException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Repository
 public class AuthRepositoryImpl implements AuthRepository {
@@ -26,19 +26,20 @@ public class AuthRepositoryImpl implements AuthRepository {
     @Transactional
     public void createUser(User theUser) {
 
-        BlocFree theBlocFree = new BlocFree();
-        theBlocFree.setUserId(theUser);
+        final String HQL = "FROM User WHERE nickname =: nickname";
+        BlocFree tempBlocFree = new BlocFree();
+        tempBlocFree.setUserId(theUser);
+        theUser.setBlocFree(tempBlocFree);
 
-        Query query = entityManager.createQuery("FROM User");
+        try {
+            TypedQuery<User> typedQuery = entityManager
+                    .createQuery(HQL, User.class);
+            typedQuery.setParameter("nickname", theUser.getNickname());
 
-        List<User> theListUser = query.getResultList();
+            typedQuery.getSingleResult();
 
-        Optional<User> userOptional = theListUser.stream()
-                        .filter(u -> u.getNickname().equals(theUser.getNickname())).findFirst();
-
-        if (userOptional.isEmpty()) {
-            theUser.addBlocFree(theBlocFree);
-
+            throw new UserRepeatException();
+        } catch (NoResultException ignored) {
             entityManager.persist(theUser);
         }
     }
@@ -46,6 +47,7 @@ public class AuthRepositoryImpl implements AuthRepository {
     @Override
     public UserDTO login(User theUser) {
 
+        final String nickname = theUser.getNickname();
         final String HQL = "FROM User WHERE nickname = :nickname AND password = :password";
 
         TypedQuery<User> typedQuery = entityManager.createQuery(HQL, User.class);
@@ -57,6 +59,8 @@ public class AuthRepositoryImpl implements AuthRepository {
         try {
             theUser = typedQuery.getSingleResult();
 
+            validateUser(theUser, nickname);
+
             tempUserDTO = new UserDTO(theUser.getNickname(), theUser.getPassword(),
                     theUser.getProfilePicture(), theUser.getPrivilegeId().getIdPrivilege());
 
@@ -64,5 +68,13 @@ public class AuthRepositoryImpl implements AuthRepository {
             throw new NoResultException("The User with nickname and password is incorrect");
         }
         return tempUserDTO;
+    }
+
+    private void validateUser(User theUser, String nickname) {
+
+        if (!Objects.equals(theUser.getNickname(), nickname)) {
+            throw new UserNotFoundException("User with nickname " + nickname +
+                    "does not exists");
+        }
     }
 }

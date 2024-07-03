@@ -1,10 +1,12 @@
 package com.merrob.bloc.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "bloc_premium")
-public class BlocPremium implements EditSection {
+@Data
+public class BlocPremium {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,19 +21,4 @@ public class BlocPremium implements EditSection {
 
     @Column(name = "password_delete")
     private String passwordDelete;
-
-    @Override
-    public void addSection(Section section) {
-
-    }
-
-    @Override
-    public void editSection(Section section) {
-
-    }
-
-    @Override
-    public void removeSection(Section section) {
-
-    }
 }

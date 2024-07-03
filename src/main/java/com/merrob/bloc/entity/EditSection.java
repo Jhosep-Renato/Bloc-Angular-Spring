@@ -2,9 +2,9 @@ package com.merrob.bloc.entity;
 
 public interface EditSection {
 
-    void addSection(Section section);
+    void addSection(Section theSection);
 
-    void editSection(Section section);
+    void editSection(Section theSection);
 
-    void removeSection(Section section);
+    void removeSection(Section theSection);
 }

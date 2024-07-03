@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void createUser(UserDTO theUserDTO) throws NullPointerException, IOException {
+    public void createUser(UserDTO theUserDTO) throws IOException {
 
         byte[] profilePicture = theUserDTO.profilePicture();
 
