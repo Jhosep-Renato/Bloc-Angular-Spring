@@ -3,7 +3,6 @@ package com.merrob.bloc.service;
 import com.merrob.bloc.dao.AuthRepository;
 import com.merrob.bloc.dto.UserDTO;
 import com.merrob.bloc.entity.Privilege;
-import static com.merrob.bloc.entity.PrivlegeConst.*;
 import com.merrob.bloc.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static com.merrob.bloc.entity.PrivlegeConst.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (profilePicture == null) {
 
-            String path = "/static/image/unknown.png";
+            String path = "/static/image/unknowna.png";
             BufferedImage bufferImage;
 
             try (InputStream is = getClass().getResourceAsStream(path)) {
