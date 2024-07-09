@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository  {
 
-    SectionFree addNewSection(String title, int blocId);
+    void addNewSection(SectionFree theSectionFree, int blocId);
 
 }

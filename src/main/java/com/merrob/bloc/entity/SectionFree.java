@@ -17,5 +17,4 @@ public class SectionFree extends Section {
     public SectionFree(String title) {
         super(title);
     }
-
 }

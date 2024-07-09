@@ -1,4 +1,4 @@
-package com.merrob.bloc.exceptions;
+package com.merrob.bloc.exceptions.auth;
 
 import jakarta.persistence.EntityExistsException;
 

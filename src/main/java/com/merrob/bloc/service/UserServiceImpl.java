@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -20,10 +20,11 @@ public class UserServiceImpl implements UserService {
         SectionFreeDTO tempSectionDTO = null;
 
         if (title.isEmpty() || blocId == 0) {
-            return tempSectionDTO;
+            throw new NullPointerException("The Title is empty");
         }
 
-        SectionFree tempSectionFree = userRepository.addNewSection(title, blocId);
+        SectionFree tempSectionFree = new SectionFree(title);
+        userRepository.addNewSection(tempSectionFree, blocId);
 
         tempSectionDTO = new SectionFreeDTO(tempSectionFree.getIdSection(),
                 tempSectionFree.getTitle());

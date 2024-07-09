@@ -2,10 +2,13 @@ package com.merrob.bloc.controller;
 
 import com.merrob.bloc.dto.CreateSectionDTO;
 import com.merrob.bloc.dto.SectionFreeDTO;
+import com.merrob.bloc.entity.SectionFree;
 import com.merrob.bloc.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user-free")
@@ -26,5 +29,10 @@ public class UserController {
         SectionFreeDTO tempSection = userService.addNewSection(title, blocId);
 
         return new ResponseEntity<>(tempSection, null, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<Set<SectionFree>> findAllSections() {
+
+        return null;
     }
 }

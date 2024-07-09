@@ -1,8 +1,7 @@
-package com.merrob.bloc.exceptions;
+package com.merrob.bloc.exceptions.auth;
 
 import com.merrob.bloc.dto.exception.AuthError;
 import com.merrob.bloc.dto.exception.GeneralError;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,7 +21,7 @@ public class AuthExceptionAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<GeneralError> generalHandlerException(IOException ie) {
+    public ResponseEntity<GeneralError> ioHandlerException(IOException ie) {
 
         GeneralError generalError = new GeneralError(NOT_FOUND.value(), ie.getMessage());
         return new ResponseEntity<>(generalError, NOT_FOUND);

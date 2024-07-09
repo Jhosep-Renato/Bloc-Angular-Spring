@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class UserFreeRepository implements UserRepository {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public UserFreeRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -17,26 +17,19 @@ public class UserFreeRepository implements UserRepository {
 
     @Override
     @Transactional
-    public SectionFree addNewSection(String title, int blocId) {
+    public void addNewSection(SectionFree theSectionFree, int blocId) {
 
-        SectionFree tempSectionFree = new SectionFree();
         BlocFree tempBlocFree;
 
-        try {
-            tempBlocFree = entityManager.find(BlocFree.class, blocId);
+        tempBlocFree = entityManager.find(BlocFree.class, blocId);
 
-            SectionFree existsSection =
-                    tempSectionFree.searchAndPersist(tempBlocFree, title, entityManager);
-
-            if (existsSection != null) {
-
-            }
-            entityManager.persist(tempSectionFree);
-        } catch (IllegalArgumentException ignored) {
+        if (tempBlocFree == null) {
+            throw new NullPointerException("There was an error with your pad");
         }
+        theSectionFree.setBlocId(tempBlocFree);
+        tempBlocFree.searchEqualsSections(theSectionFree.getTitle());
+        tempBlocFree.addSectionFree(theSectionFree);
 
-        return tempSectionFree;
+        entityManager.persist(tempBlocFree);
     }
-
-
 }
